@@ -65,7 +65,27 @@ textarea {
   color: white;
 }
 
-.saveBtn i:hover {
-  font-size: 20px;
+.custom-table th {
+  width: 6rem;
+}
+
+.custom-table td {
+  /* position: relative; */
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.custom-btn {
+  font-size: 1.25em;
+  margin: 0;
+  padding: 0 1rem;
+  opacity: .7;
+}
+
+.custom-btn:hover {
+  font-size: 1.6rem;
   transition: all 0.3s ease-in-out;
+  filter: contrast(2);
+  opacity: 1;
 }
