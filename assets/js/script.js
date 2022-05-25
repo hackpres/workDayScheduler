@@ -22,7 +22,40 @@ const fiveText = document.getElementById("5textarea");
 var DateTime = luxon.DateTime;
 
 let currentTime = DateTime.now();
+let currentTimeObject = DateTime.now().toObject();
+let timeblockTime = [nineText.dataset.timeblockhour, tenText.dataset.timeblockhour, elevenText.dataset.timeblockhour, twelveText.dataset.timeblockhour, oneText.dataset.timeblockhour, twoText.dataset.timeblockhour, threeText.dataset.timeblockhour, fourText.dataset.timeblockhour, fiveText.dataset.timeblockhour]
+
 
 dateToday.innerText = DateTime.now().toFormat('MMM dd, yyyy');
 
-console.log(currentTime);
+
+
+function checkDateTimeVSTimeblock(hour, i) {
+    if (hour > i) {
+        console.log(`> ${hour} ${i}`);
+        var tbElemGreat = document.querySelector(`[data-timeblockhour="${i}"]`);
+        tbElemGreat.classList.add("past");
+        tbElemGreat.classList.remove("present");
+        tbElemGreat.classList.remove("future");
+    } else if (hour == i) {
+        console.log(`= ${hour} ${i}`);
+        var tbElemEqual = document.querySelector(`[data-timeblockhour="${i}"]`);
+        console.log(tbElemEqual);
+        tbElemEqual.classList.add("present");
+        tbElemEqual.classList.remove("past");
+        tbElemEqual.classList.remove("future");
+    } else {
+        console.log(`< ${hour} ${i}`);
+        var tbElemLess = document.querySelector(`[data-timeblockhour="${i}"]`);
+        tbElemLess.classList.add("future");
+        tbElemLess.classList.remove("past");
+        tbElemLess.classList.remove("present");
+    }
+};
+timeblockTime.forEach((position) => checkDateTimeVSTimeblock(currentTimeObject.hour, position));
+
+let intervalID = setTimeout(() => {
+    timeblockTime.forEach((position) => checkDateTimeVSTimeblock(currentTimeObject.hour, position));
+}, 1000);
+
+
