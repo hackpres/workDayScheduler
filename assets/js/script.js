@@ -1,13 +1,3 @@
-//()    #currentDay needs dynamic creation to display current date
-//()    timeblocks need to be created for standard business hours 9am-5pm
-//update backgroun-color style for each timeblock based on past, present, and future
-    //()    function to check current Date
-    //()    if/else statements to change background-color based on the current Date
-//()    add input on timeblocks
-//()    add save button for currently selected timeblock
-//when save button is clicked, user text is stored in local memory
-//make sure timeblocks check local storage for input on page load
-
 const dateToday = document.getElementById("currentDay");
 const nineText = document.getElementById("9textarea");
 const tenText = document.getElementById("10textarea");
@@ -31,9 +21,6 @@ const saveBtn5 = document.getElementById("5btn");
         //its luxon syntax to include luxon. so this is for convenience.
 var DateTime = luxon.DateTime;
 
-
-    //checks the current time and sets it as the value of currentTime
-let currentTime = DateTime.now();
     //sets the value of currentTimeObject to the current time as an object, so I can easily get just the time measurement I need.
 let currentTimeObject = DateTime.now().toObject();
     //adds all the data-timeblockhour attributes for the table textarea's in an array
@@ -69,12 +56,23 @@ function checkDateTimeVSTimeblock(hour, i) {
 };
 function addEventListenerOnBtns(tableBtn) {
     tableBtn.addEventListener('click', () => {
-        localStorage.setItem(`CalendarItemFor ${tableBtn.id}`, `${tableBtn.parentElement.previousElementSibling.children[0].value}`);
-    })
-}
+        localStorage.setItem(`TextFor: ${tableBtn.id}`, `${tableBtn.parentElement.previousElementSibling.children[0].value}`);
+    });
+};
+function getLocalStorage(timeBtn) {
+    let storage = Object.entries(localStorage);
+    storage.forEach((keyposition) => {
+        let keyChecker = `TextFor: ${timeBtn.id}`;
+        let saveBtnTextarea = timeBtn.parentElement.previousElementSibling.children[0];
+        console.log(keyposition);
+        if (keyposition[0] === keyChecker) {
+            console.log("gotcha");
+            saveBtnTextarea.innerText = `${keyposition[1]}`;
+            console.log(keyposition[1]);
+        }
+    });
+};
 
-// let btn9parent = saveBtn9.parentElement.previousElementSibling.children[0].value
-// console.log(btn9parent);
 
     //runs the checkDateTimeVSTimeblock function when the page loads to display the correct background color for the user
 timeblockTime.forEach((position) => checkDateTimeVSTimeblock(currentTimeObject.hour, position));
@@ -83,6 +81,8 @@ let intervalID = setInterval(() => {
     currentTimeObject = DateTime.now().toObject();
     timeblockTime.forEach((position) => checkDateTimeVSTimeblock(currentTimeObject.hour, position));
 }, 1000);
-
 //each save button should store the text content of the text area in the same tr to local storage
-saveBtnArray.forEach((index) => addEventListenerOnBtns(index));
+saveBtnArray.forEach((timeRow) => {
+    getLocalStorage(timeRow)
+    addEventListenerOnBtns(timeRow)
+});
